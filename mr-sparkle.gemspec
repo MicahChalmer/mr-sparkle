@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Mr::Sparkle::VERSION
   gem.authors       = ["Micah Chalmer"]
   gem.email         = ["micah@micahchalmer.net"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{This gem contains a script to start a Unicorn-based server for your Rack application that reloads your automatically when they are changed, but doesn't incur the penalty of reloading all the gem dependencies.  It's based on Jonathan D. Stott's blog post "Magical Reloading Sparkles"--hence the name.}
+  gem.summary       = %q{Runs Unicorn, automatically reloading the application, but not bundled gems.}
+  gem.homepage      = "http://github.com/MicahChalmer/mr-sparkle"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
