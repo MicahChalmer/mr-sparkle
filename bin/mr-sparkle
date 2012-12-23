@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require_relative '../lib/mr-sparkle'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.on("--pattern [REGEXP]", Regexp,
+    "Regular expression to specify which files trigger a partial reload.  " +
+    "By default:\n #{Mr::Sparkle::DEFAULT_RELOAD_PATTERN.to_s}") do |rx|
+    options[:pattern] = rx
+  end
+  opts.on("--full-reload-pattern [REGEXP]", Regexp,
+    "Regular expression to specify which files trigger a full reload.  " +
+    "By default:\n #{Mr::Sparkle::DEFAULT_FULL_RELOAD_PATTERN.to_s}") do |rx|
+    options[:full] = rx
+  end
+end.parse!
+
+Mr::Sparkle::Daemon.new(options, ARGV).run
