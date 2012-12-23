@@ -8,7 +8,7 @@ The main purpose of this gem is to take Jonathan's idea and package it into some
 1. It assumes you're using [Bundler](http://gembundler.com/) for dependencies, which means that instead of needing a hardcoded list of gems in the `before_fork` hook, like the blog post had, this plugin just does `Bundler.require(:default)` to get all the modules mentioned in the Gemfile loaded before forking.
 1. If you change your Gemfile, the preloads are no longer valid, so this script treats that change as a special case: when the Gemfile changes, we kill the whole server and restart it, thus reloading absolutely everything.
 
-The script comes with a default set of file extensions it will watch for changes.  I've tried to be liberal about it--no harm reloading a few extra times when developing.  You can change it with the `--pattern` option, which takes a regex.
+The script comes with a default set of file extensions it will watch for changes.  I've tried to be liberal about it--no harm reloading a few extra times when developing.  You can run `mr-sparkle --help` to see the default set as a regexp, and you can change that regexp with the `--pattern` option.
 
 ## Installation
 
@@ -20,7 +20,7 @@ If you've got a Rack app that uses Bundler for its dependencies, then ordinarily
 
     $ mr-sparkle
     
-in your project's root directory.  You'll get a server listening on port 8080 (bound to all addresses, so external machines WILL be able to connect to it by default) and your code will be reloaded if any files change that match this regexp: `\.(?:builder|coffee|creole|css|erb|erubis|haml|html|js|less|liquid|mab|markdown|md|mdown|mediawiki|mkd|mw|nokogiri|radius|rb|rdoc|rhtml|ru|sass|scss|str|textile|txt|wiki|yajl|yml)$`.
+in your project's root directory.  You'll get a server listening on port 8080 (bound to all addresses, so external machines WILL be able to connect to it by default) and your code will be reloaded if any relevant files change.
 
 You can use command-line options to change the behavior a bit as follows:
 
