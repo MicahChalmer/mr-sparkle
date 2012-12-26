@@ -4,6 +4,7 @@ require 'minitest/around'
 require 'net/http'
 require 'tmpdir'
 require 'timeout'
+require 'bundler'
 
 MiniTest::Reporters.use! MiniTest::Reporters::SpecReporter.new
 
@@ -42,9 +43,12 @@ class ServerAppTest < MiniTest::Spec
     Dir.mkdir(File.expand_path('log', running_app_dir))
     @app_stdout, app_stdout_w = IO.pipe
     @app_stderr, app_stderr_w = IO.pipe
-    @app_pid = Kernel.spawn(app_command, *app_args, '--', '-l', @app_socket_path,
-      {pgroup: true, chdir: running_app_dir,
-        in: '/dev/null', out: app_stdout_w, err: app_stderr_w, pgroup: true})
+    Bundler.with_clean_env do
+      @app_pid = Kernel.spawn(
+        app_command, *app_args, '--', '-l', @app_socket_path,
+        {pgroup: true, chdir: running_app_dir,
+          in: '/dev/null', out: app_stdout_w, err: app_stderr_w, pgroup: true})
+    end
     
     @old_handler = Signal.trap(:EXIT) do
       stop_app
