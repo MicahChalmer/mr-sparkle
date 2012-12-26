@@ -10,27 +10,22 @@ module Mr
 
     class Daemon
 
-      def initialize(options, unicorn_args)
-        @reload_pattern = options[:pattern] || DEFAULT_RELOAD_PATTERN
-        @full_reload_pattern = options[:full] || DEFAULT_FULL_RELOAD_PATTERN
-        @unicorn_args = unicorn_args
-      end
-
       def start_unicorn
-        Kernel.spawn('unicorn', '-c',
+        @unicorn_pid = Kernel.spawn('unicorn', '-c',
           File.expand_path('mr-sparkle/unicorn.conf.rb',File.dirname(__FILE__)),
           *@unicorn_args)
       end
 
-      def run()
-        puts "Reload pattern: #{@reload_pattern}"
-        @unicorn_pid = start_unicorn
+      def run(options, unicorn_args)
+        reload_pattern = options[:pattern] || DEFAULT_RELOAD_PATTERN
+        full_reload_pattern = options[:full] || DEFAULT_FULL_RELOAD_PATTERN
+        @unicorn_args = unicorn_args
         listener = Listen.to('.', :relative_paths=>true)
-        listener.filter(@full_reload_pattern)
-        listener.filter(@reload_pattern)
+        listener.filter(full_reload_pattern)
+        listener.filter(reload_pattern)
         listener.change do |modified, added, removed|
-          puts "File change event detected: #{[modified, added, removed].inspect}"
-          if (modified + added + removed).index {|f| f =~ @full_reload_pattern}
+          $stderr.puts "File change event detected: #{{modified: modified, added: added, removed: removed}.inspect}"
+          if (modified + added + removed).index {|f| f =~ full_reload_pattern}
             # Reload everything.  Perhaps this could use the "procedure to
             # replace a running unicorn executable" described at:
             # http://unicorn.bogomips.org/SIGNALS.html
@@ -38,7 +33,7 @@ module Mr
             # and this is just way simpler for now.
             Process.kill(:QUIT, @unicorn_pid)
             Process.wait(@unicorn_pid)
-            @unicorn_pid = start_unicorn.call
+            start_unicorn
           else
             # Send a HUP to unicorn to tell it to gracefully shut down its
             # workers
@@ -61,6 +56,13 @@ module Mr
         # So we need to start it in the background, then keep this thread
         # alive just so it can wait to be interrupted.
         listener.start(false)
+        # Theoretically, we could have problems if a file changed RIGHT AT
+        # THIS POINT, between the time we started the listener and the time
+        # we started the unicorn process.  But this is just for development,
+        # so we're just not going to worry about that.
+        start_unicorn
+
+        # And now we just want to keep the thread alive--we're just waiting around to get interrupted at this point.
         sleep(99999) while true
       end
 

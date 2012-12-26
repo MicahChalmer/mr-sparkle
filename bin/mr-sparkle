@@ -16,4 +16,4 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-Mr::Sparkle::Daemon.new(options, ARGV).run
+Mr::Sparkle::Daemon.new.run(options, ARGV)
