@@ -44,6 +44,12 @@ class ServerAppTest < MiniTest::Spec
     @app_stdout, app_stdout_w = IO.pipe
     @app_stderr, app_stderr_w = IO.pipe
     Bundler.with_clean_env do
+      # Need to generate the right Gemfile.lock so that we don't generate it
+      # from the app itself, creating spurious reload events
+      unless File.exists?(File.expand_path('Gemfile.lock', running_app_dir))
+        Kernel.system('bundle install --local', chdir: running_app_dir, 
+          in: '/dev/null', out: '/dev/null', err: '/dev/null')
+      end
       @app_pid = Kernel.spawn(
         app_command, *app_args, '--', '-l', @app_socket_path,
         {pgroup: true, chdir: running_app_dir,

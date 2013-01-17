@@ -6,7 +6,7 @@ module Mr
 
     DEFAULT_RELOAD_PATTERN = /\.(?:builder|coffee|creole|css|erb|erubis|haml|html|js|less|liquid|mab|markdown|md|mdown|mediawiki|mkd|mw|nokogiri|radius|rb|rdoc|rhtml|ru|sass|scss|str|textile|txt|wiki|yajl|yml)$/
 
-    DEFAULT_FULL_RELOAD_PATTERN = /^Gemfile$/
+    DEFAULT_FULL_RELOAD_PATTERN = /^Gemfile(?:\.lock)?$/
 
     class Daemon
 
