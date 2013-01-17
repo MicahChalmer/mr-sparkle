@@ -38,4 +38,12 @@ describe "App Runner: Full Reloading" do
     watch_until_change_detected
     app_request('/').body.must_equal("This file was changed.\nThis string is from a gem and this time it will show changes.")
   end
+
+  it "recovers if the app becomes unstartable" do
+    change_file('Gemfile', /^#A sample/, 'THIS LINE IS BAD')
+    start_app
+    change_file('Gemfile', /^THIS LINE IS BAD/, '# Now this line is OK again')
+    watch_until_change_detected
+    app_request('/').body.must_equal(INITIAL_STRING)
+  end
 end
