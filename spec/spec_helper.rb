@@ -53,7 +53,7 @@ class ServerAppTest < MiniTest::Spec
       @app_pid = Kernel.spawn(
         app_command, *app_args, '--', '-l', @app_socket_path,
         {pgroup: true, chdir: running_app_dir,
-          in: '/dev/null', out: app_stdout_w, err: app_stderr_w, pgroup: true})
+          in: '/dev/null', out: app_stdout_w, err: app_stderr_w})
     end
     
     @old_handler = Signal.trap(:EXIT) do
