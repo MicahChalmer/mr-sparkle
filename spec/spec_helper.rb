@@ -54,6 +54,8 @@ class ServerAppTest < MiniTest::Spec
         app_command, *app_args, '--', '-l', @app_socket_path,
         {pgroup: true, chdir: running_app_dir,
           in: '/dev/null', out: app_stdout_w, err: app_stderr_w})
+      app_stdout_w.close
+      app_stderr_w.close
     end
     
     @old_handler = Signal.trap(:EXIT) do
@@ -120,6 +122,15 @@ class ServerAppTest < MiniTest::Spec
         yield
       rescue Exception=>e
         puts e.inspect
+        stop_app
+        begin
+          Timeout.timeout(1) do
+            puts "App stdout: #{@app_stdout.read}"
+            puts "App stderr: #{@app_stderr.read}"
+          end
+        rescue Exception=>f
+          puts "Exception while printing app stderr/stdout: #{f.inspect}"
+        end
         raise
       ensure
         stop_app
