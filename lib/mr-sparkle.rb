@@ -20,7 +20,7 @@ module Mr
         reload_pattern = options[:pattern] || DEFAULT_RELOAD_PATTERN
         full_reload_pattern = options[:full] || DEFAULT_FULL_RELOAD_PATTERN
         @unicorn_args = unicorn_args
-        listener = Listen.to('.', :relative_paths=>true)
+        listener = Listen.to(Dir.pwd, :relative_paths=>true)
         listener.filter(full_reload_pattern)
         listener.filter(reload_pattern)
         listener.change do |modified, added, removed|
@@ -55,7 +55,7 @@ module Mr
         # signal on the same thread the listener is running.
         # So we need to start it in the background, then keep this thread
         # alive just so it can wait to be interrupted.
-        listener.start(false)
+        listener.start
         # Theoretically, we could have problems if a file changed RIGHT AT
         # THIS POINT, between the time we started the listener and the time
         # we started the unicorn process.  But this is just for development,

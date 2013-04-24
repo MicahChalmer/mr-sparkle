@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
   gem.add_dependency("unicorn", '>= 4.5')
-  gem.add_dependency("listen", '>= 0.6')
+  gem.add_dependency("listen", '~> 1.0')
 
   # Only one of these can actually be used on a given platform, but they
   # can both be installed OK--see the note about this at:
