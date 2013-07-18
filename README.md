@@ -26,11 +26,13 @@ in your project's root directory.  You'll get a server listening on port 8080 (b
 
 You can use command-line options to change the behavior a bit as follows:
 
-    $ mr-sparkle [--pattern regex] [--full-reload-pattern regex] [-- [unicorn options]]
+    $ mr-sparkle [--pattern regex] [--full-reload-pattern regex] [--force-polling] [-- [unicorn options]]
 
 Use `--pattern` to replace the default regex that files must match to trigger a reload.  I've tried to make the default fairly liberal--it includes all extensions registered with [tilt](https://github.com/rtomayko/tilt/), for instance--so for most apps it will probably work fine.
 
 Use `--full-reload-pattern` to trigger a full reload for a different set of files.  By default it only does this for `Gemfile.`
+
+Use `--force-polling` to use polling, rather than using file system events. This is useful if you have mounted the files over NFS, in which case events don't work. By default this is turned off.
 
 Any arguments after the `--` will be passed on to unicorn.  This is how you would change the default port, make it not bind to external ip addresses, use a rackup file with a name other than `config.ru`, etc.  See [the unicorn documentation](http://unicorn.bogomips.org/unicorn_1.html) for exactly what you can pass here.  Do not pass the `-c` option to unicorn--`mr-sparkle` comes with its own unicorn config file that it will use automatically.
 

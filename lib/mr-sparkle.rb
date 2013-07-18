@@ -19,8 +19,9 @@ module Mr
       def run(options, unicorn_args)
         reload_pattern = options[:pattern] || DEFAULT_RELOAD_PATTERN
         full_reload_pattern = options[:full] || DEFAULT_FULL_RELOAD_PATTERN
+        force_polling = options[:force_polling] || false
         @unicorn_args = unicorn_args
-        listener = Listen.to(Dir.pwd, :relative_paths=>true)
+        listener = Listen.to(Dir.pwd, :relative_paths=>true, :force_polling=>force_polling)
         listener.filter(full_reload_pattern)
         listener.filter(reload_pattern)
         listener.change do |modified, added, removed|

@@ -14,6 +14,11 @@ OptionParser.new do |opts|
     "By default:\n #{Mr::Sparkle::DEFAULT_FULL_RELOAD_PATTERN.to_s}") do |rx|
     options[:full] = rx
   end
+  opts.on("--force-polling",
+    "Force polling if events aren't working (eg your directory is mounted with NFS).  " +
+    "Default: false") do |rx|
+    options[:force_polling]
+  end
 end.parse!
 
 Mr::Sparkle::Daemon.new.run(options, ARGV)
