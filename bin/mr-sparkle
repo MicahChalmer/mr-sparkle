@@ -17,7 +17,7 @@ OptionParser.new do |opts|
   opts.on("--force-polling",
     "Force polling if events aren't working (eg your directory is mounted with NFS).  " +
     "Default: false") do |rx|
-    options[:force_polling]
+    options[:force_polling] = rx
   end
 end.parse!
 
