@@ -1,3 +1,7 @@
+### 0.2.0
+
+  * Allow polling to be forced on with --force-polling.  If you have mounted the files over NFS, and are editing them remotely, then file system events are not fired, so the reloading doesn't work.  Force it to poll with --force-polling and it will work in this case. (Jamie Cobbett)
+
 ### 0.1.0
 
   * Changes for compatibility with listen 1.0 and later, which it now requires.
