@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{This gem contains a script to start a Unicorn-based server for your Rack application that reloads your automatically when they are changed, but doesn't incur the penalty of reloading all the gem dependencies.  It's based on Jonathan D. Stott's blog post "Magical Reloading Sparkles"--hence the name.}
   gem.summary       = %q{Runs Unicorn, automatically reloading the application, but not bundled gems.}
   gem.homepage      = "http://github.com/MicahChalmer/mr-sparkle"
+  gem.license       = 'MIT'
   gem.required_ruby_version = '>= 1.9.1'
 
   gem.files         = `git ls-files`.split($/)
