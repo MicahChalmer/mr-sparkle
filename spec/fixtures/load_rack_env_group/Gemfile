@@ -1,0 +1,12 @@
+# A sample Gemfile
+source "https://rubygems.org"
+
+gem 'rack', '>= 1.4'
+
+group :development do
+  gem 'my_development_gem', :path=>'vendor/my_development_gem'
+end
+
+group :foo do
+  gem 'my_foo_gem', :path=>'vendor/my_foo_gem'
+end

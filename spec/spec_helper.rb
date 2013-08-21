@@ -37,13 +37,14 @@ class ServerAppTest < MiniTest::Spec
     @app_args || []
   end
 
-  def start_app
+  def start_app(env_vars={})
     stop_app
     @app_socket_path = File.expand_path("main_unicorn_socket", running_app_dir)
     Dir.mkdir(File.expand_path('log', running_app_dir))
     @app_stdout, app_stdout_w = IO.pipe
     @app_stderr, app_stderr_w = IO.pipe
     Bundler.with_clean_env do
+      ENV.replace(Hash[ENV.to_a].merge(env_vars))
       # Need to generate the right Gemfile.lock so that we don't generate it
       # from the app itself, creating spurious reload events
       unless File.exists?(File.expand_path('Gemfile.lock', running_app_dir))
