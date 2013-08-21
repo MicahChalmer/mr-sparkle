@@ -7,7 +7,7 @@ This gem contains a script to start a [Unicorn](http://unicorn.bogomips.org/)-ba
 The main purpose of this gem is to take Jonathan's idea and package it into something can "just work" without having to be customized inside each project's code.  Besides the gem packaging, this code differs from the original watcher script in the following ways:
 
 1. It uses [listen](https://github.com/guard/listen) instead of [directory_watcher](https://github.com/TwP/directory_watcher/), which provides native event-driven file change detection, instead of polling.
-1. It assumes you're using [Bundler](http://gembundler.com/) for dependencies, which means that instead of needing a hardcoded list of gems in the `before_fork` hook, like the blog post had, this plugin just does `Bundler.require(:default)` to get all the modules mentioned in the Gemfile loaded before forking.
+1. It assumes you're using [Bundler](http://gembundler.com/) for dependencies, which means that instead of needing a hardcoded list of gems in the `before_fork` hook, like the blog post had, this plugin just does `Bundler.require(:default, ENV['RACK_ENV'])` to get all the modules mentioned in the Gemfile loaded before forking.  (Unicorn will default the RACK_ENV variable to development if it isn't set already, so by default you'll get all the gems in the `:default` and `:development` groups.)
 1. If you change your Gemfile, the preloads are no longer valid, so this script treats that change as a special case: when the Gemfile changes, we kill the whole server and restart it, thus reloading absolutely everything.
 
 The script comes with a default set of file extensions it will watch for changes.  I've tried to be liberal about it--no harm reloading a few extra times when developing.  You can run `mr-sparkle --help` to see the default set as a regexp, and you can change that regexp with the `--pattern` option.
@@ -38,7 +38,7 @@ Any arguments after the `--` will be passed on to unicorn.  This is how you woul
 
 ## Requirements
 
-This script requires Ruby 1.9.1 or greater (because it depends on `Kernel.spawn`.)  Since it's a wrapper around Unicorn, it will only work on "unix or unix-like" systems where unicorn is supported.
+This script requires Ruby 1.9.3 or greater.  Since it's a wrapper around Unicorn, it will only work on "unix or unix-like" systems where unicorn is supported.
 
 ## Contributing
 

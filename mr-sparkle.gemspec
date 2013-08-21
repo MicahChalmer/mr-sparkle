@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Runs Unicorn, automatically reloading the application, but not bundled gems.}
   gem.homepage      = "http://github.com/MicahChalmer/mr-sparkle"
   gem.license       = 'MIT'
-  gem.required_ruby_version = '>= 1.9.1'
+  gem.required_ruby_version = '>= 1.9.3'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
