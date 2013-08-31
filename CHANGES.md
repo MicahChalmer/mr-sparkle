@@ -1,3 +1,7 @@
+### 0.3.0
+
+  * In addition to gems in the :default group, also preload gems in the group specified in the RACK\_ENV environment variable, or :development if RACK\_ENV is unset.  This is similar to Rails behavior.  (Jonathan Davies)
+
 ### 0.2.0
 
   * Allow polling to be forced on with --force-polling.  If you have mounted the files over NFS, and are editing them remotely, then file system events are not fired, so the reloading doesn't work.  Force it to poll with --force-polling and it will work in this case. (Jamie Cobbett)
