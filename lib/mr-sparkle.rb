@@ -21,12 +21,10 @@ module Mr
         full_reload_pattern = options[:full] || DEFAULT_FULL_RELOAD_PATTERN
         force_polling = options[:force_polling] || false
         @unicorn_args = unicorn_args
-        listener = Listen.to(Dir.pwd, :relative_paths=>true, :force_polling=>force_polling)
-        listener.filter(full_reload_pattern)
-        listener.filter(reload_pattern)
-        listener.change do |modified, added, removed|
+        reload_pattern = Regexp.union(reload_pattern, full_reload_pattern)
+        listener = Listen.to(Dir.pwd, only: reload_pattern, force_polling: force_polling) do |modified, added, removed|
           $stderr.puts "File change event detected: #{{modified: modified, added: added, removed: removed}.inspect}"
-          if (modified + added + removed).index {|f| f =~ full_reload_pattern}
+          if (modified + added + removed).index {|f| File.basename(f) =~ full_reload_pattern}
             # Reload everything.  Perhaps this could use the "procedure to
             # replace a running unicorn executable" described at:
             # http://unicorn.bogomips.org/SIGNALS.html
