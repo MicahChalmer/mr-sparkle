@@ -41,7 +41,7 @@ module Mr
         end
 
         shutdown = lambda do |signal|
-          listener.stop
+          Thread.new { Listen.stop }
           Process.kill(:TERM, @unicorn_pid)
           Process.wait(@unicorn_pid)
           exit
