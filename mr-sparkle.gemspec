@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency('rb-inotify', '>= 0.8')
   gem.add_dependency('rb-fsevent', '>= 0.9')
 
-  gem.add_development_dependency('minitest', '>= 4.3')
+  gem.add_development_dependency('minitest', '>= 4.3', '<5.0.0')
   gem.add_development_dependency('minitest-reporters', '>= 0.13')
   gem.add_development_dependency('minitest-around', '>= 0.0')
   gem.add_development_dependency('rack', '>= 1.4')
