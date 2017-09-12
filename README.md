@@ -1,6 +1,6 @@
 # Mr. Sparkle - The Magical Reloading Rack Server
 
-[![Build Status](https://travis-ci.org/MicahChalmer/mr-sparkle.png)](https://travis-ci.org/MicahChalmer/mr-sparkle)
+[![Build Status](https://travis-ci.org/MicahChalmer/mr-sparkle.svg)](https://travis-ci.org/MicahChalmer/mr-sparkle)
 
 This gem contains a script to start a [Unicorn](http://unicorn.bogomips.org/)-based server for your [Rack](http://rack.github.com/) application that reloads your application code automatically when its files are changed, but doesn't incur the penalty of reloading all the gem dependencies.  It's based on Jonathan D. Stott's blog post ["Magical Reloading Sparkles"](http://namelessjon.posterous.com/magical-reloading-sparkles)--hence the name.  (The name is also a Simpsons reference.  [CAN YOU SEE THAT I AM SERIOUS?](http://www.youtube.com/watch?v=dnaLRbbc-54))
 
